@@ -25,44 +25,46 @@ TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 seen_hashes: set = set()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# KATEGORI & KEYWORD — FX TERMINAL
+# MATA UANG
 # ══════════════════════════════════════════════════════════════════════════════
-
-# Mata uang & identitas negara
 CURRENCY_MAP = {
-    "usd": ["usd", "dollar", "united states", "us economy", "america", "american"],
-    "eur": ["eur", "euro", "eurozone", "ecb", "european central bank", "eu economy", "germany", "france", "italy", "spain"],
-    "gbp": ["gbp", "pound", "sterling", "boe", "bank of england", "uk economy", "britain", "british"],
-    "jpy": ["jpy", "yen", "boj", "bank of japan", "japan economy", "japanese"],
-    "cad": ["cad", "canadian dollar", "bank of canada", "boc", "canada economy", "canadian"],
-    "aud": ["aud", "australian dollar", "rba", "reserve bank of australia", "australia economy", "australian"],
-    "nzd": ["nzd", "new zealand dollar", "rbnz", "reserve bank of new zealand", "new zealand economy"],
-    "chf": ["chf", "swiss franc", "snb", "swiss national bank", "switzerland economy", "swiss"],
-    "cny": ["cny", "cnh", "yuan", "renminbi", "pboc", "people's bank of china", "china economy", "chinese"],
-    "inr": ["inr", "indian rupee", "rbi", "reserve bank of india", "india economy", "indian"],
-    "idr": ["idr", "rupiah", "bank indonesia", "bi rate", "indonesia economy", "indonesian"],
-    "nok": ["nok", "norwegian krone", "norges bank", "norway economy", "norwegian"],
-    "sek": ["sek", "swedish krona", "riksbank", "sweden economy", "swedish"],
+    "usd": ["usd", "dollar", "united states", "us economy", "america", "american", "fed", "federal reserve", "fomc", "jerome powell", "powell"],
+    "eur": ["eur", "euro", "eurozone", "ecb", "european central bank", "eu economy", "germany", "france", "italy", "spain", "lagarde", "christine lagarde"],
+    "gbp": ["gbp", "pound", "sterling", "boe", "bank of england", "uk economy", "britain", "british", "andrew bailey", "bailey"],
+    "jpy": ["jpy", "yen", "boj", "bank of japan", "japan economy", "japanese", "ueda", "kazuo ueda"],
+    "cad": ["cad", "canadian dollar", "bank of canada", "boc", "canada economy", "canadian", "macklem", "tiff macklem"],
+    "aud": ["aud", "australian dollar", "rba", "reserve bank of australia", "australia economy", "australian", "bullock", "michele bullock"],
+    "nzd": ["nzd", "new zealand dollar", "rbnz", "reserve bank of new zealand", "new zealand economy", "orr", "adrian orr"],
+    "chf": ["chf", "swiss franc", "snb", "swiss national bank", "switzerland economy", "swiss", "schlegel", "martin schlegel"],
+    "cny": ["cny", "cnh", "yuan", "renminbi", "pboc", "people's bank of china", "china economy", "chinese", "pan gongsheng"],
+    "inr": ["inr", "indian rupee", "rbi", "reserve bank of india", "india economy", "indian", "das", "sanjay malhotra"],
+    "idr": ["idr", "rupiah", "bank indonesia", "bi rate", "indonesia economy", "indonesian", "perry warjiyo"],
+    "nok": ["nok", "norwegian krone", "norges bank", "norway economy", "norwegian", "bache", "ida wolden bache"],
+    "sek": ["sek", "swedish krona", "riksbank", "sweden economy", "swedish", "thedeen"],
     "dkk": ["dkk", "danish krone", "danmarks nationalbank", "denmark economy", "danish"],
     "sgd": ["sgd", "singapore dollar", "mas", "monetary authority of singapore", "singapore economy"],
     "hkd": ["hkd", "hong kong dollar", "hkma", "hong kong economy"],
     "mxn": ["mxn", "mexican peso", "banxico", "banco de mexico", "mexico economy", "mexican"],
     "zar": ["zar", "south african rand", "sarb", "south africa reserve bank", "south africa economy"],
-    "try": ["try", "turkish lira", "tcmb", "central bank of turkey", "turkey economy", "turkish"],
+    "try": ["try", "turkish lira", "tcmb", "central bank of turkey", "turkey economy", "turkish", "karahan"],
     "pln": ["pln", "polish zloty", "nbp", "national bank of poland", "poland economy", "polish"],
     "thb": ["thb", "thai baht", "bank of thailand", "thailand economy", "thai"],
+    "krw": ["krw", "korean won", "won", "bank of korea", "bok", "south korea economy", "korean", "kospi", "rhee", "chang yong rhee"],
 }
 
 ALL_CURRENCY_KEYWORDS = [kw for kws in CURRENCY_MAP.values() for kw in kws]
 
-# Topik ekonomi & kebijakan
+# ══════════════════════════════════════════════════════════════════════════════
+# KEYWORD TOPIK
+# ══════════════════════════════════════════════════════════════════════════════
+
 MACRO_KEYWORDS = [
-    # Bank sentral & suku bunga
+    # Suku bunga & kebijakan
     "interest rate", "rate hike", "rate cut", "rate decision", "rate hold",
     "monetary policy", "policy meeting", "policy decision", "policy statement",
     "minutes", "fomc", "mpc", "governing council", "rate expectations",
     "forward guidance", "quantitative easing", "qe", "qt", "tapering",
-    "rate cut expectations", "rate hike expectations", "dovish", "hawkish",
+    "dovish", "hawkish",
     # Data ekonomi
     "inflation", "cpi", "ppi", "core inflation", "gdp", "growth",
     "unemployment", "nonfarm payroll", "nfp", "jobs report", "labor market",
@@ -70,15 +72,15 @@ MACRO_KEYWORDS = [
     "trade balance", "current account", "balance of payments",
     "consumer confidence", "business confidence", "sentiment",
     "housing", "construction", "ism", "ifo", "zew",
-    # Kebijakan pemerintah & fiskal
+    # Fiskal & pemerintah
     "fiscal policy", "government spending", "budget", "deficit", "surplus",
     "debt ceiling", "public debt", "stimulus", "austerity", "tax",
     "government bond", "sovereign", "treasury",
-    # Bonds & Yield
+    # Bonds & yield
     "bond yield", "treasury yield", "gilt yield", "bund yield",
     "yield curve", "10-year", "2-year", "30-year", "spread",
     "bond market", "fixed income", "credit rating", "sovereign rating",
-    # Indeks negara (bukan saham individu)
+    # Indeks negara
     "s&p 500", "nasdaq", "dow jones", "ftse", "dax", "cac 40",
     "nikkei", "topix", "hang seng", "kospi", "asx 200", "nifty",
     "sensex", "ihsg", "jci", "sti", "set index", "ipc mexico",
@@ -89,34 +91,95 @@ MACRO_KEYWORDS = [
     "price target", "currency target", "fx target",
     "bearish", "bullish", "neutral", "overweight", "underweight",
     "upgrade", "downgrade", "revision",
-    # Geopolitik & ketidakpastian
+    # Geopolitik
     "geopolit", "war", "conflict", "sanction", "tariff", "trade war",
     "election", "political", "uncertainty", "risk",
-    "nato", "g7", "g20", "imf", "world bank", "bis",
-    "opec", "supply shock", "demand shock",
+    "nato", "g7", "g20", "imf", "world bank", "bis", "opec",
+    "supply shock", "demand shock",
 ]
 
-# Komoditas fokus: emas, perak, minyak
+# ── BARU: Speech & Statement pejabat bank sentral ─────────────────────────────
+SPEECH_KEYWORDS = [
+    # Generic
+    "speech", "statement", "remarks", "testimony", "press conference",
+    "interview", "comment", "says", "warns", "signals", "hints",
+    "reiterates", "confirms", "suggests", "indicates", "notes",
+    # Fed
+    "powell", "jerome powell", "waller", "jefferson", "kugler", "cook",
+    "williams", "daly", "kashkari", "bostic", "barkin", "goolsbee",
+    "collins", "mester", "fed speak", "fed official",
+    # ECB
+    "lagarde", "christine lagarde", "lane", "schnabel", "de guindos",
+    "nagel", "villeroy", "rehn", "kazaks", "ecb official", "ecb speak",
+    # BOE
+    "bailey", "andrew bailey", "broadbent", "pill", "ramsden",
+    "haskel", "greene", "dhingra", "boe official",
+    # BOJ
+    "ueda", "kazuo ueda", "himino", "uchida", "tamura", "boj official",
+    # Other governors
+    "macklem", "tiff macklem", "bullock", "michele bullock",
+    "orr", "adrian orr", "schlegel", "pan gongsheng",
+    "perry warjiyo", "ida wolden bache", "thedeen", "rhee", "chang yong rhee",
+    "karahan", "das", "sanjay malhotra",
+    # Generic central bank
+    "governor", "deputy governor", "chief economist", "policymaker",
+    "board member", "committee member", "central banker",
+]
+
+# ── BARU: Risk sentiment ──────────────────────────────────────────────────────
+RISK_SENTIMENT_KEYWORDS = [
+    # Risk on/off
+    "risk on", "risk off", "risk-on", "risk-off",
+    "risk appetite", "risk aversion", "risk sentiment",
+    "safe haven", "safe-haven", "flight to safety", "flight to quality",
+    # Safe haven flows
+    "yen rally", "yen surge", "dollar surge", "dollar rally",
+    "franc rally", "gold rally", "bond rally",
+    "safe haven demand", "haven demand",
+    # Volatility
+    "vix", "volatility index", "market volatility", "vol spike",
+    "fear gauge", "implied volatility",
+    # Sentiment indikator
+    "risk premium", "credit spread", "cds spread",
+    "carry trade", "carry unwind", "yen carry",
+    "market sentiment", "investor sentiment", "trader sentiment",
+    "positioning", "speculative positioning", "net long", "net short",
+    # Kondisi pasar
+    "market turmoil", "market stress", "financial stress",
+    "liquidity crunch", "liquidity crisis", "credit crunch",
+    "sell-off", "selloff", "market crash", "flash crash",
+    "risk rally", "relief rally", "haven flows",
+]
+
+# ── BARU: Intervensi FX ───────────────────────────────────────────────────────
+INTERVENTION_KEYWORDS = [
+    "intervention", "fx intervention", "currency intervention",
+    "verbal intervention", "jawboning",
+    # JPY
+    "yen intervention", "boj intervention", "mof intervention",
+    "ministry of finance japan", "yen weakening concern",
+    "excessive yen", "disorderly yen", "one-sided move",
+    "kanda", "masato kanda", "mimura", "atsushi mimura",
+    # IDR
+    "rupiah intervention", "bank indonesia intervention",
+    "rupiah defense", "rupiah stabilization",
+    # CNY
+    "yuan intervention", "pboc fixings", "pboc fix",
+    "yuan defense", "cny fix", "daily fixing",
+    # Umum
+    "currency manipulation", "currency war", "competitive devaluation",
+    "managed float", "dirty float", "peg defense",
+    "forex reserves", "fx reserves", "burn reserves",
+    "dollar selling", "dollar buying", "currency support",
+]
+
 COMMODITY_KEYWORDS = [
     "gold", "xau", "emas",
     "silver", "xag", "perak",
     "crude oil", "brent", "wti", "oil price", "minyak",
-    # Komoditas lain hanya kalau impact global
     "commodity shock", "energy crisis", "food crisis", "supply disruption",
 ]
 
-# Kata yang langsung SKIP (saham individu, crypto, dll)
-EXCLUDE_KEYWORDS = [
-    "bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency",
-    "altcoin", "defi", "blockchain", "nft", "solana", "ripple", "xrp",
-    "binance", "coinbase", "dogecoin",
-    # Saham individu — ciri khas: ticker dalam kurung, earnings call, dll
-    "earnings call transcript", "q1 earnings", "q2 earnings", "q3 earnings", "q4 earnings",
-    "quarterly earnings", "annual earnings", "revenue growth", "net loss", "net income",
-    "stock split", "dividend", "buyback", "ipo ",
-]
-
-# Topik geopolitik global yang tetap masuk meski bukan mata uang fokus
 GLOBAL_IMPACT_KEYWORDS = [
     "global recession", "world economy", "global economy", "global trade",
     "global inflation", "global growth", "global market", "global risk",
@@ -125,43 +188,58 @@ GLOBAL_IMPACT_KEYWORDS = [
     "financial crisis", "systemic risk", "contagion",
 ]
 
+EXCLUDE_KEYWORDS = [
+    "bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency",
+    "altcoin", "defi", "blockchain", "nft", "solana", "ripple", "xrp",
+    "binance", "coinbase", "dogecoin",
+    "earnings call transcript", "q1 earnings", "q2 earnings",
+    "q3 earnings", "q4 earnings", "quarterly earnings", "annual earnings",
+    "stock split", "buyback", "ipo ",
+]
+
 
 def passes_filter(title: str) -> bool:
     lower = title.lower()
-
-    # Hapus dulu berita yang jelas tidak relevan
     if any(ex in lower for ex in EXCLUDE_KEYWORDS):
         return False
-
-    # Lolos jika: ada mata uang relevan + topik makro/ekonomi
+    if any(kw in lower for kw in COMMODITY_KEYWORDS):
+        return True
+    if any(kw in lower for kw in GLOBAL_IMPACT_KEYWORDS):
+        return True
+    if any(kw in lower for kw in SPEECH_KEYWORDS):
+        # Speech hanya lolos kalau ada kaitannya dengan mata uang/ekonomi
+        if any(kw in lower for kw in ALL_CURRENCY_KEYWORDS + MACRO_KEYWORDS):
+            return True
+    if any(kw in lower for kw in INTERVENTION_KEYWORDS):
+        return True
+    if any(kw in lower for kw in RISK_SENTIMENT_KEYWORDS):
+        return True
     has_currency = any(kw in lower for kw in ALL_CURRENCY_KEYWORDS)
     has_macro    = any(kw in lower for kw in MACRO_KEYWORDS)
-    has_commodity = any(kw in lower for kw in COMMODITY_KEYWORDS)
-    has_global   = any(kw in lower for kw in GLOBAL_IMPACT_KEYWORDS)
-
-    if has_commodity:
+    if has_currency or has_macro:
         return True
-    if has_global:
-        return True
-    if has_currency and has_macro:
-        return True
-    if has_currency:
-        return True  # berita tentang mata uang apapun tetap masuk
-
     return False
 
 
 def detect_category(title: str) -> str:
     lower = title.lower()
 
-    if any(kw in lower for kw in COMMODITY_KEYWORDS[:6]):  # emas, perak, minyak
+    # Prioritas tertinggi
+    if any(kw in lower for kw in INTERVENTION_KEYWORDS):
+        return "🚨 Intervensi FX"
+    if any(kw in lower for kw in RISK_SENTIMENT_KEYWORDS):
+        return "⚡ Risk Sentiment"
+    if any(kw in lower for kw in SPEECH_KEYWORDS) and any(kw in lower for kw in ALL_CURRENCY_KEYWORDS + MACRO_KEYWORDS):
+        return "🎙️ Pidato Pejabat"
+    if any(kw in lower for kw in COMMODITY_KEYWORDS[:6]):
         return "🛢️ Komoditas"
     if any(kw in lower for kw in ["bond yield", "treasury yield", "gilt yield", "bund yield",
                                     "yield curve", "10-year", "2-year", "spread", "fixed income"]):
         return "🏦 Bonds & Yield"
     if any(kw in lower for kw in ["interest rate", "rate hike", "rate cut", "rate decision",
                                     "monetary policy", "fomc", "mpc", "governing council",
-                                    "minutes", "dovish", "hawkish", "rate expectations"]):
+                                    "minutes", "dovish", "hawkish", "rate expectations",
+                                    "forward guidance"]):
         return "🏛️ Kebijakan Bank Sentral"
     if any(kw in lower for kw in ["inflation", "cpi", "ppi", "gdp", "nonfarm", "nfp",
                                     "unemployment", "retail sales", "pmi", "ism", "ifo",
@@ -180,8 +258,6 @@ def detect_category(title: str) -> str:
         return "📡 Proyeksi & Analisis"
     if any(kw in lower for kw in GLOBAL_IMPACT_KEYWORDS):
         return "🌍 Global Macro"
-    if any(kw in lower for kw in ["forex", "currency", "exchange rate", "fx"]):
-        return "💱 Forex"
 
     # Deteksi mata uang spesifik
     for cur, keywords in CURRENCY_MAP.items():
@@ -195,7 +271,6 @@ def make_hash(title: str, url: str = "") -> str:
     return hashlib.md5((title + url).encode()).hexdigest()
 
 
-# ── Translation ───────────────────────────────────────────────────────────────
 def translate_to_id(text: str) -> str:
     try:
         result = GoogleTranslator(source="auto", target="id").translate(text)
@@ -205,7 +280,6 @@ def translate_to_id(text: str) -> str:
         return text
 
 
-# ── Telegram ──────────────────────────────────────────────────────────────────
 def send_telegram(message: str, thread_id: int = None):
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
@@ -243,9 +317,9 @@ def format_and_send(source: str, title: str, url: str, published: str):
     if not passes_filter(title):
         return
 
-    category  = detect_category(title)
+    category    = detect_category(title)
     translation = translate_to_id(title)
-    time_str  = to_wib(published) if published else ""
+    time_str    = to_wib(published) if published else ""
 
     lines = [
         f"{category}",
@@ -278,13 +352,17 @@ RSS_FEEDS = {
     "Investing.com": [
         "https://www.investing.com/rss/news.rss",
         "https://www.investing.com/rss/news_25.rss",
-        "https://www.investing.com/rss/news_301.rss",  # commodities
+        "https://www.investing.com/rss/news_301.rss",
     ],
     "FXStreet": [
         "https://www.fxstreet.com/rss/news",
     ],
     "ForexLive": [
         "https://www.forexlive.com/feed/news",
+    ],
+    "Reuters": [
+        "https://feeds.reuters.com/reuters/businessNews",
+        "https://feeds.reuters.com/reuters/UKdomesticNews",
     ],
 }
 
@@ -404,14 +482,17 @@ def poll_marketaux():
 
 # ── Command handler ───────────────────────────────────────────────────────────
 COMMAND_HELP = {
-    "/forex":    "💱 Forex — berita pergerakan & analisis mata uang",
-    "/macro":    "🌍 Global Macro — geopolitik, kebijakan global",
-    "/rate":     "🏛️ Kebijakan Bank Sentral — suku bunga, minutes, forward guidance",
-    "/data":     "📊 Data Ekonomi — CPI, GDP, NFP, PMI, dll",
-    "/bonds":    "🏦 Bonds & Yield — treasury, spread, yield curve",
-    "/indeks":   "📈 Indeks Negara — FTSE, DAX, Nikkei, IHSG, dll",
-    "/komoditas":"🛢️ Komoditas — Emas, Perak, Minyak",
-    "/analisa":  "📡 Proyeksi & Analisis — forecast, target, outlook",
+    "/forex":       "💱 Forex — pergerakan & analisis mata uang",
+    "/macro":       "🌍 Global Macro — geopolitik, kebijakan global",
+    "/rate":        "🏛️ Kebijakan Bank Sentral — suku bunga, minutes",
+    "/data":        "📊 Data Ekonomi — CPI, GDP, NFP, PMI, dll",
+    "/bonds":       "🏦 Bonds & Yield — treasury, spread, yield curve",
+    "/indeks":      "📈 Indeks Negara — FTSE, DAX, Nikkei, IHSG, KOSPI",
+    "/komoditas":   "🛢️ Komoditas — Emas, Perak, Minyak",
+    "/analisa":     "📡 Proyeksi & Analisis — forecast, target, outlook",
+    "/pidato":      "🎙️ Pidato Pejabat — speech & statement bank sentral",
+    "/sentiment":   "⚡ Risk Sentiment — risk on/off, safe haven, VIX",
+    "/intervensi":  "🚨 Intervensi FX — intervensi bank sentral di pasar FX",
 }
 
 def handle_commands():
@@ -431,22 +512,23 @@ def handle_commands():
                     text = msg.get("text", "").lower().strip()
                     cmd  = text.split("@")[0]
 
-                    if cmd == "/start" or cmd == "/help":
+                    if cmd in ("/start", "/help"):
                         lines = [
                             "🤖 <b>FX News Terminal</b>",
                             "",
-                            "Memantau berita realtime untuk <b>22 mata uang</b>:",
+                            "Memantau berita realtime untuk <b>23 mata uang</b>:",
                             "USD · EUR · GBP · JPY · CAD · AUD · NZD · CHF",
-                            "CNY · INR · IDR · NOK · SEK · DKK · SGD · HKD",
-                            "MXN · ZAR · TRY · PLN · THB",
+                            "CNY · INR · IDR · KRW · NOK · SEK · DKK · SGD",
+                            "HKD · MXN · ZAR · TRY · PLN · THB",
                             "",
-                            "Sumber: Finnhub, MarketAux, CNBC, MarketWatch,",
-                            "Yahoo Finance, Investing.com, FXStreet, ForexLive",
+                            "Sumber: Finnhub · MarketAux · CNBC · Reuters",
+                            "MarketWatch · Yahoo Finance · Investing.com",
+                            "FXStreet · ForexLive",
                             "",
                             "<b>Command:</b>",
                         ]
-                        for cmd_name, desc in COMMAND_HELP.items():
-                            lines.append(f"{cmd_name} — {desc}")
+                        for c, desc in COMMAND_HELP.items():
+                            lines.append(f"{c} — {desc}")
                         send_telegram("\n".join(lines), thread_id=TELEGRAM_THREAD_ID)
 
                     elif cmd in COMMAND_HELP:
@@ -454,7 +536,7 @@ def handle_commands():
                         reply = (
                             f"{desc}\n\n"
                             f"Bot memantau kategori ini secara realtime.\n"
-                            f"Berita akan masuk otomatis saat dirilis. ✅"
+                            f"Berita masuk otomatis saat dirilis. ✅"
                         )
                         send_telegram(reply, thread_id=TELEGRAM_THREAD_ID)
 
@@ -468,12 +550,14 @@ if __name__ == "__main__":
     log.info("🚀 FX Terminal Bot started")
     send_telegram(
         "🤖 <b>FX News Terminal Aktif!</b>\n\n"
-        "Memantau berita untuk 22 mata uang:\n"
-        "USD · EUR · GBP · JPY · CAD · AUD · NZD · CHF · CNY · INR · IDR\n"
-        "NOK · SEK · DKK · SGD · HKD · MXN · ZAR · TRY · PLN · THB\n\n"
-        "Cakupan: Forex · Kebijakan Bank Sentral · Data Ekonomi\n"
-        "Bonds/Yield · Indeks Negara · Komoditas (Emas/Perak/Minyak)\n"
-        "Proyeksi Analis · Geopolitik · Ketidakpastian Politik\n\n"
+        "Memantau 23 mata uang:\n"
+        "USD · EUR · GBP · JPY · CAD · AUD · NZD · CHF · CNY\n"
+        "INR · IDR · <b>KRW</b> · NOK · SEK · DKK · SGD · HKD\n"
+        "MXN · ZAR · TRY · PLN · THB\n\n"
+        "Cakupan:\n"
+        "💱 Forex  🏛️ Kebijakan Bank Sentral  📊 Data Ekonomi\n"
+        "🏦 Bonds/Yield  📈 Indeks Negara  🛢️ Komoditas\n"
+        "🎙️ Pidato Pejabat  ⚡ Risk Sentiment  🚨 Intervensi FX\n\n"
         "Ketik /help untuk command. 🇮🇩",
         thread_id=TELEGRAM_THREAD_ID
     )
